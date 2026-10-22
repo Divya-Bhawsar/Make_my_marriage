@@ -43,8 +43,11 @@ export class UnauthenticatedError extends AppError {
 }
 
 export class ForbiddenError extends AppError {
-  constructor(message: string = 'Insufficient permissions to perform this action') {
-    super(message, ERROR_CODES.FORBIDDEN, 403);
+  constructor(
+    message: string = 'Insufficient permissions to perform this action',
+    code: ErrorCode = ERROR_CODES.FORBIDDEN
+  ) {
+    super(message, code, 403);
   }
 }
 

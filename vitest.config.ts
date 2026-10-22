@@ -6,9 +6,13 @@ export default defineConfig({
     environment: 'node',
     globals: true,
   },
+  esbuild: {
+    jsx: 'automatic',
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
   },
 });
+

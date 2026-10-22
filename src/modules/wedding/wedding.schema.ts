@@ -47,3 +47,22 @@ export const updateWeddingSchema = z.object({
 });
 
 export type UpdateWeddingInput = z.infer<typeof updateWeddingSchema>;
+
+export const updateWebsiteSchema = z.object({
+  theme: z.string().trim().min(1).max(50).optional(),
+  welcomeMessage: z.string().trim().max(2000).optional().nullable(),
+  isPublished: z.boolean().optional(),
+});
+
+export type UpdateWebsiteInput = z.infer<typeof updateWebsiteSchema>;
+
+export const updateLivestreamSchema = z.object({
+  provider: z.enum(['YOUTUBE', 'GOOGLE_MEET']).optional(),
+  youtubeUrl: z.string().trim().max(500).optional().nullable(),
+  meetingUrl: z.string().trim().max(500).optional().nullable(),
+  instructions: z.string().trim().max(1000).optional().nullable(),
+  scheduledStartTime: z.string().trim().max(100).optional().nullable(),
+  isEnabled: z.boolean().optional(),
+});
+
+export type UpdateLivestreamInput = z.infer<typeof updateLivestreamSchema>;

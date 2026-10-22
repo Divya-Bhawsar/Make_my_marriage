@@ -36,3 +36,7 @@ yarn-error.log*
 # History files
 *.Rhistory
 .Rhistory
+
+# User Uploads
+/public/uploads/
+

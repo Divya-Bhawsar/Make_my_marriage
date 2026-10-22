@@ -19,12 +19,19 @@ export interface IWeddingWebsite {
 
 export interface IWeddingGallery {
   tokenHash: string;
+  token?: string;
   isEnabled: boolean;
   guestUploadsEnabled: boolean;
 }
 
+export type LivestreamProvider = 'YOUTUBE' | 'GOOGLE_MEET';
+
 export interface IWeddingLivestream {
+  provider?: LivestreamProvider;
   youtubeUrl?: string | null;
+  meetingUrl?: string | null;
+  instructions?: string | null;
+  scheduledStartTime?: string | null;
   isEnabled: boolean;
 }
 
@@ -122,6 +129,10 @@ const WeddingSchema = new Schema<IWedding>(
         unique: true,
         index: true,
       },
+      token: {
+        type: String,
+        sparse: true,
+      },
       isEnabled: {
         type: Boolean,
         required: true,
@@ -134,7 +145,15 @@ const WeddingSchema = new Schema<IWedding>(
       },
     },
     livestream: {
+      provider: {
+        type: String,
+        enum: ['YOUTUBE', 'GOOGLE_MEET'],
+        default: 'YOUTUBE',
+      },
       youtubeUrl: String,
+      meetingUrl: String,
+      instructions: String,
+      scheduledStartTime: String,
       isEnabled: {
         type: Boolean,
         required: true,
@@ -156,6 +175,14 @@ const WeddingSchema = new Schema<IWedding>(
     collection: 'weddings',
   }
 );
+
+if (
+  mongoose.models.Wedding &&
+  (!mongoose.models.Wedding.schema.path('livestream.meetingUrl') ||
+    !mongoose.models.Wedding.schema.path('gallery.token'))
+) {
+  delete (mongoose.models as Record<string, unknown>).Wedding;
+}
 
 export const WeddingModel: Model<IWedding> =
   mongoose.models.Wedding || mongoose.model<IWedding>('Wedding', WeddingSchema, 'weddings');
